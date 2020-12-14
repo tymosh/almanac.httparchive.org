@@ -586,6 +586,25 @@ footer.alt-bg a:focus {
   color: #1a2b49;
 }
 
+.new-edition-banner a {
+  margin: 0 auto;
+  padding: 10px;
+  display: block;
+  text-align: center;
+  background-color: #f7f779;
+  color: black;
+  text-decoration: none;
+}
+
+.new-edition-banner a:hover,
+.new-edition-banner a:focus {
+  background-color: #5c687d;
+  color: #f2f2f2;
+  text-decoration: underline;
+
+}
+
+
 .top-header,
 footer {
   padding-top: 40px;

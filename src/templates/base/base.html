@@ -282,10 +282,17 @@
 </div>
 {% endmacro %}
 
+{% block new_edition_banner %}
+
+{% endblock %}
+
 {% block content%}
   <div id="skiptocontent"><a href="#maincontent">{{ self.skip_navigation() }}</a></div>
   {% block header %}
   <header id="header" class="alt-bg">
+    {% if year < default_year %}
+    <div class="new-edition-banner"><a href="../{{ default_year }}/">{{ self.new_edition_banner() }}</a></div>
+    {% endif %}
     <div class="container">
       <div class="top-header">
         <a class="navigation-logo" href="{{ url_for('home', year=year, lang=lang) }}">

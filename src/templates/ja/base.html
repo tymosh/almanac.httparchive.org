@@ -85,6 +85,8 @@
 
 {% macro edition(year) %}{{ year }} 版{% endmacro %}
 
+{% block new_edition_banner %}Web Almanacの{{ default_year }}年版が利用可能になりました{% endblock %}
+
 {% block footer_title %}フッターナビゲーション{% endblock %}
 {% block copyright %}© Web Almanac. Licensed under <a href="https://github.com/HTTPArchive/almanac.httparchive.org/blob/main/LICENSE">Apache 2.0</a>.{% endblock %}
 {% block accessibility_statement %}アクセシビリティに関する声明{% endblock %}
