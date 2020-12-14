@@ -52,9 +52,10 @@ def render_template(template, *args, **kwargs):
     supported_chapters = SUPPORTED_CHAPTERS.get(year)
 
     kwargs.update(year=year, lang=lang, language=language, supported_languages=template_supported_languages,
-                  supported_years=template_supported_years, all_supported_years=SUPPORTED_YEARS, default_year=DEFAULT_YEAR,
+                  supported_years=template_supported_years, all_supported_years=SUPPORTED_YEARS,
                   supported_chapters=supported_chapters, date_published=date_published, date_modified=date_modified,
-                  ebook_size_in_mb=ebook_size_in_mb, get_file_date_info=get_file_date_info, config=config)
+                  ebook_size_in_mb=ebook_size_in_mb, get_file_date_info=get_file_date_info, config=config,
+                  default_year=DEFAULT_YEAR)
     return flask_render_template(template, *args, **kwargs)
 
 
