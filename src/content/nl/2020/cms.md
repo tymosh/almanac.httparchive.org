@@ -299,7 +299,7 @@ Als we kijken naar het aandeel van CMS-adoptie ten opzichte van andere CMS'en (d
 
 WordPress domineert deze ruimte en verdient daarom verdere discussie.
 
-[WordPress is een open source project](https://nl.wordpress.org/about/) met als missie "publiceren democratiseren". Het CMS is gratis. Hoewel dit waarschijnlijk een belangrijke factor is in het adoptiegedeelte, zijn de twee op één na populairste CMS'en - Joomla en Drupal - ook gratis. De WordPress-gemeenschap, bijdragers en het zakelijke ecosysteem zijn waarschijnlijk de belangrijkste onderscheidende factoren.
+<a href="https://nl.wordpress.org/about/">WordPress is een open source project</a> met als missie "publiceren democratiseren". Het CMS is gratis. Hoewel dit waarschijnlijk een belangrijke factor is in het adoptiegedeelte, zijn de twee op één na populairste CMS'en - Joomla en Drupal - ook gratis. De WordPress-gemeenschap, bijdragers en het zakelijke ecosysteem zijn waarschijnlijk de belangrijkste onderscheidende factoren.
 
 Een "kern" WordPress-gemeenschap handhaaft de CMS- en servicevereisten voor aanvullende functionaliteit door middel van aangepaste services en producten (thema's en plug-ins). Deze gemeenschap heeft een grote impact, met een relatief klein aantal mensen die zowel het CMS zelf onderhouden als de extra functionaliteit bieden die WordPress krachtig en flexibel genoeg maakt om de meeste soorten websites te kunnen bedienen. Deze flexibiliteit is belangrijk bij het uitleggen van het marktaandeel.
 
@@ -403,7 +403,7 @@ De top 5 CMS'en zouden hier kunnen verbeteren. Slechts 50% van de webpagina's di
 
 #### SEO
 
-Zoekmachineoptimalisatie (of SEO) is het optimaliseren van websites om ervoor te zorgen dat de inhoud van uw website gemakkelijker vindbaar is in zoekmachines. Dit wordt dieper behandeld in ons hoofdstuk [SEO](./seo), maar een deel betreft het verzekeren dat de site zo is gecodeerd dat de crawlers van zoekmachines zoveel mogelijk informatie kunnen verstrekken om het hen zo gemakkelijk mogelijk te maken om uw site op de juiste manier weer te geven in de resultaten van zoekmachines. In vergelijking met een op maat gemaakte website, zou je verwachten dat een CMS goede SEO-mogelijkheden biedt, en de Lighthouse-scores in deze categorie laten hoge cijfers zien:
+Zoekmachineoptimalisatie (of SEO) is het optimaliseren van websites om ervoor te zorgen dat de inhoud van uw website gemakkelijker vindbaar is in zoekmachines. Dit wordt dieper behandeld in ons hoofdstuk [SEO](./seo), maar een deel betreft het verzekeren dat de site zo is gecodeerd dat de crawlers van zoekmachines zoveel mogelijk informatie kunnen verstrekken om het hen zo gemakkelijk mogelijk te maken om uw site op de juiste manier weer te geven in de resultaten van zoekmachines. In vergelijking met een op maat gemaakte website, zou u verwachten dat een CMS goede SEO-mogelijkheden biedt, en de Lighthouse-scores in deze categorie laten hoge cijfers zien:
 
 {{ figure_markup(
   image="cms-seo-lighthouse-score.png",
@@ -517,7 +517,7 @@ Afbeeldingsformaten zijn een mechanisme om afbeeldingen efficiënter te maken. A
 
 We kunnen de vraag naar de impact van CMS'en op het milieu niet volledig beantwoorden, maar we dragen bij aan een antwoord. CMS'en hebben de verantwoordelijkheid om de impact op het milieu serieus te nemen en het verlagen van het gemiddelde paginagewicht is belangrijk werk.
 
-## Conclusie
+## Gevolgtrekking
 
 CMS'en zijn het afgelopen jaar alleen maar belangrijker geworden. Ze zijn essentieel voor de manier waarop inhoud op internet wordt gemaakt en geconsumeerd, en er zijn geen tekenen dat dit in de nabije toekomst zal veranderen. CMS'en zullen elk jaar belangrijker worden.
 

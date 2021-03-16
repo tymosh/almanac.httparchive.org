@@ -27,33 +27,14 @@
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="{{ get_versioned_filename('/static/css/page.css') }}">
+<link rel="preload" href="{{ get_versioned_filename('/static/css/page.css') }}" as="style" />
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-{{ self.index_menu_script() }}
 <script nonce="{{ csp_nonce() }}">
-
-document.addEventListener("keyup", function onPress(event) {
-   if (event.key === 'p' || event.key === 'P' || event.key === ',' || event.key === '<') {
-     var previous = document.getElementById('previous-chapter');
-     if (previous) {
-       previous.click();
-     }
-   }
-   if (event.key === 'n' || event.key === 'N' || event.key === '.' || event.key === '>') {
-     var next = document.getElementById('next-chapter');
-     if (next) {
-       next.click();
-     }
-   }
-});
-
 window.discussion_url="https://discuss.httparchive.org/t/{{ metadata.get('discuss') }}.json";
 </script>
-
-<script src="{{ get_versioned_filename('/static/js/chapter.js') }}" defer></script>
-
+{{ super() }}
 {% endblock %}
 
 {# Calls to action for readers who want to engage more with this chapter. #}
@@ -115,7 +96,7 @@ window.discussion_url="https://discuss.httparchive.org/t/{{ metadata.get('discus
   {% if metadata.get('editors') and metadata.get('editors') | length >= 1 and (metadata.get('reviewers') == metadata.get('analysts') or metadata.get('editors') != metadata.get('analysts')) %}
   <div class="byline editors">{{ self.edited_by_before() }}
   {% for editor in metadata.get('editors') %}
-    <a class="editor" href="{{ url_for('contributors', year=year, lang=lang, _anchor=analyst) }}">{{ config.contributors[editor].name if editor in config.contributors else editor }}</a>{% if loop.length > 2 %}{{ self.comma() if loop.index < loop.length - 1 }}{{ self.oxford_comma() if loop.index == loop.length - 1 }}{% endif %}
+    <a class="editor" href="{{ url_for('contributors', year=year, lang=lang, _anchor=editor) }}">{{ config.contributors[editor].name if editor in config.contributors else editor }}</a>{% if loop.length > 2 %}{{ self.comma() if loop.index < loop.length - 1 }}{{ self.oxford_comma() if loop.index == loop.length - 1 }}{% endif %}
     {% if loop.index == loop.length - 1 %}{{ self.and() }}{% endif %}
   {% endfor %}{{ self.edited_by_after() }}
   </div>
@@ -278,7 +259,7 @@ window.discussion_url="https://discuss.httparchive.org/t/{{ metadata.get('discus
     <nav aria-label="{{ self.index_nav_title() }}" class="index">
         <div class="index-box floating-card">
           <h2 class="header">
-            <button class="index-btn" aria-expanded="false" aria-label="{{ self.open_the_index() }}">{{ self.index_title() }}</button>
+            <button type="button" class="index-btn" aria-expanded="false" aria-label="{{ self.open_the_index() }}" data-close-text="{{ self.close_the_index() }}" data-open-text="{{ self.open_the_index() }}">{{ self.index_title() }}</button>
             <span class="no-button">{{ self.index_title() }}</span>
           </h2>
           {{ self.index() }}
@@ -296,14 +277,14 @@ window.discussion_url="https://discuss.httparchive.org/t/{{ metadata.get('discus
                 <span class="chapter-unedited">{{ self.unedited() }}</span>
                 {% endif %}
             </h1>
-            <!-- Show large image for large screens and high density screens and use webp when supported -->
+            <!-- Show large image for large screens and high density screens and use avif and webp when supported -->
             <picture>
-              <source media="(min-width: 327px)" type="image/webp" srcset="{{ chapter_hero_dir }}hero_lg.webp" />
-              <source media="(min-width: 327px)" type="image/jpeg" srcset="{{ chapter_hero_dir }}hero_lg.jpg" />
-              <source type="image/webp" srcset="{{ chapter_hero_dir }}hero_lg.webp 2x" />
-              <source type="image/jpeg" srcset="{{ chapter_hero_dir }}hero_lg.jpg 2x" />
-              <source type="image/webp" srcset="{{ chapter_hero_dir }}hero_sm.webp" />
-              <source type="image/jpeg" srcset="{{ chapter_hero_dir }}hero_sm.jpg" />
+              <source media="(min-width: 866px)" type="image/avif" srcset="{{ chapter_hero_dir }}hero_lg.avif" />
+              <source media="(min-width: 866px)" type="image/webp" srcset="{{ chapter_hero_dir }}hero_lg.webp" />
+              <source media="(min-width: 866px)" type="image/jpeg" srcset="{{ chapter_hero_dir }}hero_lg.jpg" />
+              <source type="image/avif" srcset="{{ chapter_hero_dir }}hero_sm.avif 1x, {{ chapter_hero_dir }}hero_lg.avif 2x" />
+              <source type="image/webp" srcset="{{ chapter_hero_dir }}hero_sm.webp 1x, {{ chapter_hero_dir }}hero_lg.webp 2x" />
+              <source type="image/jpeg" srcset="{{ chapter_hero_dir }}hero_sm.jpg 1x, {{ chapter_hero_dir }}hero_lg.jpg 2x" />
               <img src="{{ chapter_hero_dir }}hero_lg.jpg" class="content-banner" alt="" width="866" height="433" loading="eager" />
             </picture>
             {{ render_byline() }}

@@ -2,6 +2,7 @@
 
 {% block styles %}
   <link rel="stylesheet" href="{{ get_versioned_filename('/static/css/almanac.css') }}">
+  <link rel="preload" href="{{ get_versioned_filename('/static/css/almanac.css') }}" as="style" />
 {% endblock %}
 
 {% block page_url %}https://almanac.httparchive.org{{ url_for(request.endpoint, **get_view_args(lang=language.lang_code, year=year)) }}{% endblock %}
@@ -63,7 +64,12 @@
 	  	      "url": "https://almanac.httparchive.org/static/images/ha.png",
 	  	      "height": 160,
 	  	      "width": 320
-	  	  }
+	  	  },
+        "sameas": [
+          "https://httparchive.org",
+          "https://twitter.com/HTTPArchive",
+          "https://github.com/HTTPArchive"
+          ]
       },
     "author":
       {{ self.author_structured_data() }},
@@ -135,27 +141,27 @@
       {% set title = localizedChapterTitles[chapter_config.slug] if localizedChapterTitles[chapter_config.slug]|length else chapter_config.title %}
       {% if chapter_config.todo %}
         <option disabled>
-          {{ self.chapter() }} {{ chapter_config.chapter }}: {{title}}
+          {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{title}}
         </option>
       {% else %}
         {% if chapter_lang_exists(lang, year, chapter_config.slug) %}
           {% if current_title == title %}
             <option disabled selected value="{{ url_for('chapter', year=year, lang=lang, chapter=chapter_config.slug) }}">
-              {{ self.chapter() }} {{ chapter_config.chapter }}: {{title}}
+              {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{title}}
             </option>
           {% else %}
             <option value="{{ url_for('chapter', year=year, lang=lang, chapter=chapter_config.slug) }}">
-              {{ self.chapter() }} {{ chapter_config.chapter }}: {{title}}
+              {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{title}}
             </option>
           {% endif %}
         {% else %}
         {% if current_title == title %}
           <option disabled selected value="{{ url_for('chapter', year=year, lang='en', chapter=chapter_config.slug) }}">
-            {{ self.chapter() }} {{ chapter_config.chapter }}: {{title}}
+            {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{title}}
           </option>
         {% else %}
           <option value="{{ url_for('chapter', year=year, lang='en', chapter=chapter_config.slug) }}">
-            {{ self.chapter() }} {{ chapter_config.chapter }}: {{title}}
+            {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{title}}
           </option>
         {% endif %}
         {% endif %}
@@ -195,7 +201,7 @@
 {% set current_title = metadata.get('title') if metadata else None %}
 <a class="nav-dropdown-btn js-hide" href="{{ url_for('table_of_contents', year=year, lang=lang) }}">{{ self.table_of_contents_title() }}</a>
 <div class="nav-dropdown {{switcher_name}} table-of-contents js-enable hidden">
-  <button class="nav-dropdown-btn" aria-expanded="false" aria-label="{{ self.table_of_contents_title() }}" >
+  <button type="button" class="nav-dropdown-btn" aria-expanded="false" aria-label="{{ self.table_of_contents_title() }}" >
     {{ self.table_of_contents_title() }}
   </button>
   <ul class="nav-dropdown-list hidden {{switcher_name}}-list">
@@ -232,15 +238,15 @@
     {% if current_title == title %}
     <li class="nav-dropdown-list-chapter nav-dropdown-list-current">
       {% if chapter_config.todo %}
-      <span class="nav-dropdown-list-todo">{{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }}</span>
+      <span class="nav-dropdown-list-todo">{{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }}</span>
       {% else %}
           {% if chapter_lang_exists(lang, year, chapter_config.slug) %}
           <span>
-            {{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }}
+            {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }}
           </span>
           {% else %}
           <span>
-            {{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }} <span class="not-translated">({{ self.translation_not_available() }})</span>
+            {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }} <span class="not-translated">({{ self.translation_not_available() }})</span>
           </span>
           {% endif %}
       {% endif %}
@@ -248,15 +254,15 @@
     {% else %}
     <li class="nav-dropdown-list-chapter">
       {% if chapter_config.todo %}
-      <span class="nav-dropdown-list-todo">{{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }}</span>
+      <span class="nav-dropdown-list-todo">{{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }}</span>
       {% else %}
         {% if chapter_lang_exists(lang, year, chapter_config.slug) %}
         <a href="{{ url_for('chapter', year=year, lang=lang, chapter=chapter_config.slug) }}">
-          {{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }}
+          {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }}
         </a>
         {% else %}
         <a href="{{ url_for('chapter', year=year, lang='en', chapter=chapter_config.slug) }}">
-          {{ self.chapter() }} {{ chapter_config.chapter }}: {{ title }} <span class="not-translated">({{ self.translation_not_available() }})</span>
+          {{ self.chapter() }} {{ chapter_config.chapter_number }}: {{ title }} <span class="not-translated">({{ self.translation_not_available() }})</span>
         </a>
         {% endif %}
       {% endif %}
@@ -381,6 +387,21 @@
       </div>
     </div>
   </header>
+  <script nonce="{{ csp_nonce() }}">
+    // If JS is enabled then enable menus ASAP to avoid CLS as menu items change from links to buttons
+    (function() {
+      document.querySelectorAll('.js-hide').forEach(element => {
+        // Don't just hide it - delete it completely to avoid any specifity issues
+        element.parentNode.removeChild(element);
+      });
+      document.querySelectorAll('.js-enable').forEach(element => {
+        element.classList.remove('js-enable');
+        element.classList.remove('hidden');
+        element.disabled = false;
+        element.hidden = false;
+      });
+    })();
+  </script>
   {% endblock %}
 
   {% block container %}
@@ -486,179 +507,14 @@
     </footer>
   {% endblock %}
   {% block scripts %}
-    <script nonce="{{ csp_nonce() }}">
-      (function() {
-        document.querySelectorAll('.js-hide').forEach(element => {
-          // Don't just hide it - delete it completely to avoid any specifity issues
-          element.parentNode.removeChild(element);
-        });
-        document.querySelectorAll('.js-enable').forEach(element => {
-          element.classList.remove('js-enable');
-          element.classList.remove('hidden');
-          element.disabled = false;
-          element.hidden = false;
-        });
-
-        // Language, Year and ToC switching
-        var languageYearSwitchers = document.querySelectorAll('.language-switcher select, .year-switcher select, .table-of-contents-switcher select');
-        for (var i = 0; i < languageYearSwitchers.length; i++) {
-          languageYearSwitchers[i].addEventListener('change', function(e) {
-
-            var selectedOption = this.options[this.selectedIndex];
-
-            if (e.target.dataset.label && selectedOption.dataset.event) {
-              gtag('event', selectedOption.dataset.event, {
-                'event_category': 'clicks',
-                'event_label': e.target.dataset.label,
-                'transport_type': 'beacon',
-                'value': 1 })
-            }
-
-            //Reset the selector back in case user uses Back button
-            var selectedValue = e.target.value;
-            if (selectedValue && selectedValue !== window.location.pathname) {
-              e.target.value = window.location.pathname;
-              window.location = selectedValue;
-            }
-          });
-        }
-
-        function closeAnyOtherOpenDropdown(e) {
-          if (e.target.classList.contains('dropdown-open')) {
-            return
-          };
-          var openDropdownBtn = document.querySelector('.nav-dropdown-btn.dropdown-open');
-          openDropdownBtn && openDropdownBtn.click();
-        }
-        function trapFocusInList(e) {
-          var list = e.currentTarget;
-          var isInFooter = list.classList.contains('footer-list');
-          if(e.key === "ArrowDown") {
-            var siblingElem = isInFooter ? e.target.parentElement.previousElementSibling : e.target.parentElement.nextElementSibling;
-            var focusableElem = siblingElem ? siblingElem.querySelector('a') : (isInFooter ? lastFocusableElementInList : firstFocusableElementInList);
-            e.preventDefault();
-            focusableElem.focus();
-          } else if (e.key === "ArrowUp") {
-            var siblingElem = isInFooter ? e.target.parentElement.nextElementSibling : e.target.parentElement.previousElementSibling;
-            var focusableElem = siblingElem ? siblingElem.querySelector('a') : (isInFooter ? firstFocusableElementInList : lastFocusableElementInList);
-            e.preventDefault();
-            focusableElem.focus();
-          } else if (e.key === "Escape") {
-            var navDropDown = e.currentTarget.closest('.nav-dropdown');
-            var navDropDownBtn = navDropDown.querySelector('.nav-dropdown-btn');
-            navDropDownBtn.click();
-            navDropDownBtn.focus();
-          }
-        }
-        var firstFocusableElementInList, lastFocusableElementInList;
-        function toggleDropdownVisibility(e) {
-          var dropdownBtn = e.currentTarget;
-          var dropdown = dropdownBtn.closest('.nav-dropdown');
-          var list = dropdown.querySelector('.nav-dropdown-list');
-          var isListVisible =  !list.classList.toggle('hidden');
-          var dropdownOpen = dropdownBtn.classList.toggle('dropdown-open');
-          dropdownBtn.setAttribute('aria-expanded', dropdownOpen);
-
-          if (isListVisible) {
-            var btnBoundingRect = dropdownBtn.getBoundingClientRect();
-            var listBoundingRect = list.getBoundingClientRect();
-            if (listBoundingRect.width <= btnBoundingRect.width) {
-              list.classList.add("align-center");
-            } else if (btnBoundingRect.left + listBoundingRect.width > window.innerWidth) {
-              list.classList.add("align-right");
-            }
-            document.body.addEventListener('click', closeAnyOtherOpenDropdown, true);
-            var navItems = list.querySelectorAll('a');
-            firstFocusableElementInList = navItems[0];
-            lastFocusableElementInList = navItems[navItems.length - 1];
-            list.addEventListener('keydown', trapFocusInList);
-          } else {
-            list.removeEventListener('keydown', trapFocusInList);
-            document.body.removeEventListener('click', closeAnyOtherOpenDropdown, true);
-          }
-        }
-
-        function navBtnKeyDownHandler(e) {
-          var dropdownList = e.currentTarget.nextElementSibling;
-          var isDropdownOpen = e.currentTarget.classList.contains('dropdown-open');
-          var isInFooter = dropdownList.classList.contains('footer-list');
-          if(e.key === "Escape") {
-            e.currentTarget.click();
-          } else if (e.key === "ArrowDown") {
-            e.preventDefault();
-            !isDropdownOpen && e.currentTarget.click();
-            (isInFooter ? dropdownList.lastElementChild : dropdownList.firstElementChild).querySelector('a').focus();
-          } else if (isInFooter && e.key === "ArrowUp") {
-            e.preventDefault();
-            !isDropdownOpen && e.currentTarget.click();
-            dropdownList.firstElementChild.querySelector('a').focus();
-          }
-        }
-
-        var navDropdownButtons = document.querySelectorAll('.nav-dropdown-btn');
-        for (var i = 0; i < navDropdownButtons.length; i++) {
-          navDropdownButtons[i].addEventListener('click', toggleDropdownVisibility);
-          navDropdownButtons[i].addEventListener('keydown', navBtnKeyDownHandler);
-        }
-
-        // Mobile menu
-        var menuBtn = document.querySelector('.menu-btn');
-        var menuNav = document.querySelector('#menu');
-
-        function toggleNavMenu() {
-          var menuOpen = document.body.classList.toggle('menu-open');
-          menuBtn.classList.toggle("menu-btn--active");
-          menuBtn.setAttribute('aria-expanded', menuOpen);
-          var ariaLabel = menuOpen ?  menuBtn.getAttribute('data-close-text') : menuBtn.getAttribute('data-open-text');
-          menuBtn.setAttribute('aria-label', ariaLabel);
-
-          /* When you open the menu, add an event listener to close it when clicking outside the menu area */
-          /* Remove it on closing the menu */
-          if (menuBtn.getAttribute('aria-expanded') === 'true') {
-            document.body.addEventListener('click', toggleNavMenu, false);
-          } else {
-            document.body.removeEventListener('click', toggleNavMenu, false);
-          }
-        }
-
-        menuBtn.addEventListener('click', function() {
-          toggleNavMenu();
-          event.stopPropagation();
-        });
-
-        /* Add a click listener to menu so when it's open it swallows click to avoid above click closing it */
-        menuNav.addEventListener('click', function () {
-          event.stopPropagation();
-        });
-
-        menuNav.addEventListener('keydown', function (event) {
-          if (event.key === 'Escape') {
-            if (menuBtn.getAttribute('aria-expanded') === 'true') {
-              toggleNavMenu();
-              menuBtn.focus();
-            }
-          }
-        });
-
-        document.querySelectorAll('[data-event]').forEach(trackableElement => {
-          trackableElement.addEventListener('click', function (event) {
-            gtag('event', event.target.dataset.event, {
-              'event_category': 'clicks',
-              'event_label': event.target.dataset.label,
-              'transport_type': 'beacon',
-              'value': 1 })
-          });
-        });
-
-      })();
-    </script>
+  <script async src="{{ get_versioned_filename('/static/js/almanac.js') }}"></script>
   {% endblock %}
 {% endblock %}
 
 {% macro figure_dropdown(metadata, chapter_config, id, sheets_gid="", sql_file="", image="", caption="") %}
   {% if sheets_gid != "" or  sql_file != "" or image != "" %}
   <div class="figure-dropdown nav-dropdown">
-    <button class="nav-dropdown-btn js-enable hidden" disabled aria-expanded="false" title="{{ self.explore_the_results() }}">
+    <button type="button" class="nav-dropdown-btn js-enable hidden" disabled aria-expanded="false" title="{{ self.explore_the_results() }}">
       <span class="visually-hidden">{{ self.explore_the_results() }}</span>
       <svg aria-hidden="true" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
@@ -733,7 +589,7 @@
 
 {% macro styled_lang_dropdown(switcher_name) %}
   <div class="nav-dropdown {{switcher_name}}">
-    <button class="nav-dropdown-btn js-enable" disabled aria-expanded="false" aria-label="{{ self.language_switcher() }}" >{{ language }}</button>
+    <button type="button" class="nav-dropdown-btn js-enable" disabled aria-expanded="false" aria-label="{{ self.language_switcher() }}" >{{ language }}</button>
     <ul class="nav-dropdown-list hidden {{switcher_name}}-list">
       {% for l in supported_languages | sort(attribute='_local_name') %}
         {% if l != language %}
@@ -849,7 +705,7 @@
     </a>
     {% if not ebook %}{{ figure_dropdown(metadata, chapter_config, id, sheets_gid, sql_file, image) }}{% endif %}
   </div>
-  <button hidden="" class="fig-description-button" aria-expanded="false" aria-controls="{{ anchor }}-description" data-show-text="{{ show_description(metadata,chapter_config,id) }}" data-hide-text="{{ hide_description(metadata,chapter_config,id) }}">{{ show_description(metadata,chapter_config,id) }}</button>
+  <button type="button" hidden="" class="fig-description-button" aria-expanded="false" aria-controls="{{ anchor }}-description" data-show-text="{{ show_description(metadata,chapter_config,id) }}" data-hide-text="{{ hide_description(metadata,chapter_config,id) }}">{{ show_description(metadata,chapter_config,id) }}</button>
   <div id="{{ anchor }}-description" class="visually-hidden">{{ description|safe }}</div>
   {%- elif content != "" %}
   <div class="figure-wrapper">
@@ -895,7 +751,7 @@
 
 {% macro styled_year_dropdown(switcher_name)%}
   <div class="nav-dropdown {{switcher_name}}">
-    <button class="nav-dropdown-btn js-enable" disabled aria-expanded="false" aria-label="{{ self.year_switcher() }}">{{ year }}</button>
+    <button type="button" class="nav-dropdown-btn js-enable" disabled aria-expanded="false" aria-label="{{ self.year_switcher() }}">{{ year }}</button>
     <ul class="nav-dropdown-list hidden {{switcher_name}}-list">
       {% for y in supported_years | sort %}
         {% if y != year %}
@@ -918,33 +774,18 @@
   </div>
 {% endmacro %}
 
-{% block index_menu_script %}
-<script nonce="{{ csp_nonce() }}">
-
-  var indexBox = document.querySelector('.index-box');
-  var indexBoxTitle = document.querySelector('.index .index-btn');
-
-  indexBoxTitle.addEventListener('click', function(e) {
-    var indexOpen = indexBox.classList.toggle('show');
-    indexBoxTitle.setAttribute('aria-expanded',indexOpen);
-    var ariaLabel = indexOpen ?  "{{ self.close_the_index() }}" : "{{ self.open_the_index() }}";
-    indexBoxTitle.setAttribute('aria-label',ariaLabel);
-  });
-
-  indexBox.addEventListener("keydown", function onPress(event) {
-    if (event.key === 'Escape') {
-      if (indexBoxTitle.getAttribute('aria-expanded') === 'true') {
-        indexBoxTitle.click();
-        indexBoxTitle.focus();
-      }
-    }
-  });
-</script>
-{% endblock %}
-
 {% macro swatch(color) %}
 <svg width="10" height="15" version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" >
   <title>{{ color }}</title>
   <rect x="0" y="0" width="10" height="15" stroke="black" fill="{{ color }}" stroke-width="1" />
 </svg>
 {% endmacro %}
+
+{% block bodyend %}
+{{ super() }}
+{% if request.path.endswith("/" + year + "/") or request.path.endswith("table-of-contents") or request.path.endswith("contributors") %}
+<!-- Let's assume you're going to visit one of the chapters and prefetch the page.css stylesheet -->
+<!-- A small optimisation but hey, every little helps! -->
+<link rel="prefetch" href="{{ get_versioned_filename('/static/css/page.css') }}" as="style" />
+{% endif %}
+{% endblock %}
