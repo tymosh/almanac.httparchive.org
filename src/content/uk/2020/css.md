@@ -133,3 +133,38 @@ CSS пропонує кілька варіантів застосування с
 ) }}
 
 Ідентифікатори також можуть бути використані для навмисного зниження або збільшення специфічності. <a hreflang="en" href="https://csswizardry.com/2014/07/hacks-for-dealing-with-specificity/">Хак для запису селектора ID як селектора атрибута</a> (`[id="foo"]` замість `#foo`, щоб знизити специфічність) зустрічався на диво рідко і лише 0,3% сторінок використовували його як мінімум один раз. Інший хак, пов’язаний зі специфічністю ID, — використання заперечення + селектора нащадка, наприклад, `:not(#nonexistent) .foo` замість `.foo`, щоб збільшити специфічність, — був також доволі рідкісним і з’являвся лише на 0,1% сторінок.
+
+### `!important` {important}
+
+Натомість, старий, грубий `!important` і досі використовується, не дивлячись на його <a hreflang="en" href="https://www.impressivewebs.com/everything-you-need-to-know-about-the-important-css-declaration/#post-475:~:text=Drawbacks,-to">добре відомі недоліки</a>. Серединна сторінка використовує `!important` у майже 2% декларацій , або в 1 з 50 випадків.
+
+{{ figure_markup(
+  caption="Мобільні сторінки, які використовують `!important` в кожній декларації!",
+  content="2,138",
+  classes="big-number",
+  sheets_gid="1743048352",
+  sql_file="meta_important_adoption.sql"
+) }}
+
+Деякі розробники буквально не можуть зупинитися: ми знайшли 2304 настільних і 2138 мобільних сторінок, які використовують `!important` у кожній декларації!
+
+{{ figure_markup(
+  image="important-properties.png",
+  caption="Поширення відсотків властивостей `!important` на сторінку.",
+  description="Гістограма показує поширення відсотку властивостей !important на сторінку. Настільні сторінки використовують !important на більшій кількості властивостей, ніж мобільні. 10, 25, 50, 75 та 90-ий відсотки для мобільних є наступними: 0, 1, 2, 4 та 7% властивостей з !important.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=768784205&format=interactive",
+  sheets_gid="1743048352",
+  sql_file="meta_important_adoption.sql"
+) }}
+
+Що розробники так сильно хочуть перебити? Ми поглянули на розподіл за властивостями і виявили, що близько 80% сторінок використовують `!important` з властивістю `display`. Поширеною стратегією є використання `display: none !important` для приховування контенту допоміжними класами, щоб перебити наявний CSS, що використовує `display` для визначення способу розміщення. Це побічний ефект того, що було потоком у CSS. Він поєднав три ортогональні характеристики в одну: внутрішній спосіб розміщення, поведінку потоку і статус видимості – всі контролюються єдиною властивістю `display`. Є спроби розділити ці значення у різні ключові слова `display`, що дає змогу коригувати їх окремо за допомогою кастомних властивостей. На жаль, <a hreflang="en" href="https://caniuse.com/mdn-css_properties_display_multi-keyword_values">підтримка браузерами фактично відсутня</a> на даний момент.
+
+{{ figure_markup(
+  image="important-top-properties.png",
+  alt="Найпоширеніші властивості з !important за відсотком сторінок.",
+  caption="Найпоширеніші властивості з !important за відсотком сторінок.",
+  description="Гістограма показує 10 найпоширеніших властивостей з `!important`. Мобільні та настільні сторінки використовують цей метод зі схожою частотою. Властивість `display` використовується з `!important` найбільше — 79% мобільних сторінок. В порядку спадання, наступні властивості на 71-58% мобільних сторінках є такими: `color`, `width`, `height`, `background`, `padding`, `margin`, `border`, `background-color` і `float`.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=257343566&format=interactive",
+  sheets_gid="1222608982",
+  sql_file="meta_important_properties.sql"
+) }}
