@@ -380,7 +380,18 @@ background-clip: border-box;
   sql_file="all_properties.sql"
 ) }}
 
-#### Flex
+#### `flex`
+
+Майже всі властивості `flex`, `flex-*` широко використовуються, з’являючись на 30-60% сторінок. Однак обидва `flex-wrap` та `flex-direction` зустрічаються набагато частіше, ніж їх скорочений запис `flex-flow`. Коли використовується `flex-flow`, він здебільшого має два значення, тобто є простішим способом задати значення обох своїх розгорнутих варіантів. Не дивлячись на [пропрацьовані доцільні значення за замовчуванням](https://developer.mozilla.org/en-US/docs/Web/CSS/flex#Syntax:~:text=The%20flex%20property%20may%20be%20specified%20using%20one%2C%20two%2C%20or%20three%20values) для використання `flex` з одним або двома значеннями, близько 90% випадків мають синтаксис з 3 значеннями, явно задаючи всі три значення розгорнутих записів.
+
+{{ figure_markup(
+  image="flex-shorthand-vs-longhand.png",
+  caption="Порівняння використання скорочених та розгорнутих записів `flex`.",
+  description="Гістограма показує використання `flex-direction` на 55% настільних сторінок і 60% на мобільних, `flex-wrap` — на 55% і 58% відповідно,`flex` — на 52% і 56%, `flex-grow` — на 44% і 52%,`flex-basis` — на 40% і 44%,`flex-shrink` — на 28% і 37%, `flex-flow` — на 27% і 30% сторінок.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=930720666&format=interactive",
+  sheets_gid="1513860089",
+  sql_file="all_properties.sql"
+) }}
 
 #### Grid
 
