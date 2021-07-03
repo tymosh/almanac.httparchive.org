@@ -354,6 +354,19 @@ background-clip: border-box;
 
 #### background
 
+Як один з найдавніших скорочених записів, `background` також широко використовується, з’являючись 1 млрд разів на 92% сторінок. Він зустрічається частіше, ніж будь-який з його розгорнутих записів, окрім `background-color`, що використовується 1,5 млрд разів на майже такій самій кількості сторінок. Але це не означає, що розробникам повністю комфортно працювати з усім його синтаксисом: майже все (>90%) використання `background` є дуже простим з одним або двома значеннями (найчастіше колір та зображення або зображення та положення). Для решти випадків розгорнуті записи є більш зрозумілими.
+
+{{ figure_markup(
+  image="background-shorthand-versus-longhand.png",
+  caption="Порівняння використання розгорнутих записів `background` та його скорочених версій.",
+  description="Гістограма показує використання `background` на 91% настільних і 92% мобільних сторінок, `background-color` — на 91% та 92% відповідно, `background-image` — на 85% і 87%, `background-position` — на 84% і 85%, `background-repeat` — на 82% і 84%, `background-size` — на 77% і 79%, `background-clip` — на 48% і 53%, `background-attachment` — на 37% і 38%, `background-origin` — на 5% настільних та 12% мобільних сторінок.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=2014923335&format=interactive",
+  sheets_gid="1513860089",
+  sql_file="all_properties.sql",
+  width="600",
+  height="429"
+) }}
+
 #### Margins and paddings
 
 #### Flex
