@@ -380,7 +380,7 @@ background-clip: border-box;
   sql_file="all_properties.sql"
 ) }}
 
-#### `flex`
+#### Flex
 
 Майже всі властивості `flex`, `flex-*` широко використовуються, з’являючись на 30-60% сторінок. Однак обидва `flex-wrap` та `flex-direction` зустрічаються набагато частіше, ніж їх скорочений запис `flex-flow`. Коли використовується `flex-flow`, він здебільшого має два значення, тобто є простішим способом задати значення обох своїх розгорнутих варіантів. Не дивлячись на [пропрацьовані доцільні значення за замовчуванням](https://developer.mozilla.org/en-US/docs/Web/CSS/flex#Syntax:~:text=The%20flex%20property%20may%20be%20specified%20using%20one%2C%20two%2C%20or%20three%20values) для використання `flex` з одним або двома значеннями, близько 90% випадків мають синтаксис з 3 значеннями, явно задаючи всі три значення розгорнутих записів.
 
@@ -395,6 +395,18 @@ background-clip: border-box;
 
 #### Grid
 
+А ви знали, що `grid-template-columns`, `grid-template-rows` та `grid-template-areas` насправді є скороченими записами `grid-template`? Знали, що існує властивість `grid` і всі вказані вище властивості належать до її розгорнутих записів? Ні? Тоді ви у хорошій компанії: більшість розробників також не знають. Властивість `grid` використовувалася лише на 5 279 веб-сайтах (0,08%), а `grid-template` — на 8 215 (0.13%). Для порівняння, `grid-template-columns` використовується на 1,7 млн сайтів, тобто у 200 разів частіше!
+
+{{ figure_markup(
+  image="usage-of-grid-properties.png",
+  caption="Порівняння використання скорочених та розгорнутих записів `grid`.",
+  description="Гістограма показує використання `grid-template-columns` на 27% настільних та 26% мобільних сторінок, `grid-template-rows` — на 24% та 24% відповідно, `grid-column` — на 20% та 20%, `grid-row` — на 20% та 19%, `grid-area` — на 6% та 6%, `grid-template-areas` — на 6% та 6%, `grid-gap` — на 4% та 5%, `grid-column-gap` — на 4% та 3%, `grid-row-gap` — на 3% та 3%, `grid-column-end` — на 3% та 2%, `grid-column-start` — на 3% та 2%, `grid-row-start` — на 3% та 2%, `grid-row-end` — на 2% та 2%, `grid-auto-columns` — на 2% та 2%, `grid-auto-rows` — на 1% та 1%, `grid-auto-flow` — на 1% та 1%, `grid-template` — на 0% та 0%, `grid` — на 0% та 0%, `grid-column-span` — на 0% та 0%, `grid-columns` — на 0% та 0%, і `grid-rows` — на 0% та 0% сторінок.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=290183398&format=interactive",
+  sheets_gid="1513860089",
+  sql_file="all_properties.sql",
+  width="600",
+  height="575"
+) }}
 
 
 ### Помилки у CSS
