@@ -244,6 +244,193 @@ CSS пропонує кілька варіантів застосування с
   height=500
 ) }}
 
+
+## Значення та одиниці вимірювання
+
+CSS пропонує декілька варіантів задання значень та одиниць вимірювання: через розмір, калькуляцію або з використанням глобальних ключових слів.
+
+### Розміри
+
+Скромні одиниці вимірювання `px` отримували чимало негативного тиску протягом багатьох років. Спершу тому, що вони погано працювали зі старою функціональністю масштабування в Internet Explorer, а останнім часом тому, що є кращі одиниці вимірювання для більшості завдань, які масштабуються в залежності від інших факторів дизайну: розміру області огляду, розміру шрифта конкретного або кореневого елемента, зменшуючи затрати на підтримку тим, що неявні пропорції дизайну стають явними. Найбільша перевага `px` — його відповідність одному пікселю пристрою, що давало дизайнерам повний контроль, — також лишилася в минулому, оскільки піксель більше не є пікселем пристрою для сучасних екранів з високою щільністю пікселів. Не дивлячись на все це, пікселі у CSS й досі майже повсюдно керують веб-дизайном.
+
+{{ figure_markup(
+  caption="Відсоток значень розмірів, які використовують одиниці вимірювання `px`.",
+  content="72.58%",
+  classes="big-number",
+  sheets_gid="1221511608",
+  sql_file="units_frequency.sql"
+) }}
+
+Одиниці вимірювання `px` й досі є найпопулярнішими одиницями розмірів в цілому, з колосальними 72,58% від усіх значень розмірів серед всіх файлів стилів, що використовують `px`! А якщо ми виключимо відсотки (оскільки вони не зовсім є одиницями вимірювання), частка `px` зросте навіть більше, до 84,14%.
+
+{{ figure_markup(
+  image="length-units.png",
+  caption="Найпопулярніші одиниці розмірів у відсотках випадків.",
+  description="Гістограма показує найпопулярніші одиниці вимірювання розмірів у відсотках випадків (частота, з якою одиниця вимірювання з’являється в усіх таблицях стилів). `px` є найпопулярнішою на даний момент і використовується 73% випадків у мобільних таблицях стилів. Наступною найпопулярнішою одиницею є `%` (знак відсотка) з 17%, слідом за нею `em` з 9% та `rem` з 1%. Наступні одиниці вимірювання використовуються настільки рідко, що їх відсоток використання округлюється до 0: `pt`, `vw`, `vh`, `ch`, `ex`, `cm`, `mm`, `in`, `vmin`, `pc` та `vmax`.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=2095127496&format=interactive",
+  sheets_gid="1221511608",
+  sql_file="units_frequency.sql"
+) }}
+
+Яким чином `px` розподілені між властивостями? Чи є якась різниця в залежності від властивостей? Абсолютно так. Наприклад, як будь-хто міг би очікувати, `px` більш популярні у `border` (80-90%) в порівнянні з метриками, що мають відношення до шрифтів, такими як `font-size`, `line-height` або `text-indent`. Але навіть для цих властивостей використання `px` значно перевищує будь-які інші одиниці. Фактично, єдиними властивостями, для яких інша одиниця (*будь-яка* інша одиниця) використовується частіше, ніж `px`, є `vertical-align` (55% `em`), `mask-position` (50% `em`), `padding-inline-start` (62% `em`), `margin-block-start` та `margin-block-end` (65% `em`), а також абсолютно нова `gap` з 62% `rem`.
+
+Будь-хто може з легкістю заперечити, що значна частина цього контенту є просто застарілою, написаною до того, як автори дізналися більше про використання відносних одиниць для того, щоб зробити свої дизайни адаптивнішими та зекономити свій час у майбутньому. Однак це швидко розвінчується переглядом статистики для новіших властивостей, таких як `grid-gap` (62% `px`).
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Властивість</th>
+        <th><code>px</code></th>
+        <th><code>&lt;число&gt;</code></th>
+        <th><code>em</code></th>
+        <th><code>%</code></th>
+        <th><code>rem</code></th>
+        <th><code>pt</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>font-size</code></td>
+        <td class="numeric">70%</td>
+        <td class="numeric">2%</td>
+        <td class="numeric">17%</td>
+        <td class="numeric">6%</td>
+        <td class="numeric">4%</td>
+        <td class="numeric">2%</td>
+      </tr>
+      <tr>
+        <td><code>line-height</code></td>
+        <td class="numeric">54%</td>
+        <td class="numeric">31%</td>
+        <td class="numeric">13%</td>
+        <td class="numeric">3%</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>border</code></td>
+        <td class="numeric">71%</td>
+        <td class="numeric">27%</td>
+        <td class="numeric">2%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>border-radius</code></td>
+        <td class="numeric">65%</td>
+        <td class="numeric">21%</td>
+        <td class="numeric">3%</td>
+        <td class="numeric">10%</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>text-indent</code></td>
+        <td class="numeric">32%</td>
+        <td class="numeric">51%</td>
+        <td class="numeric">8%</td>
+        <td class="numeric">9%</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>vertical-align</code></td>
+        <td class="numeric">29%</td>
+        <td class="numeric">12%</td>
+        <td class="numeric">55%</td>
+        <td class="numeric">4%</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>grid-gap</code></td>
+        <td class="numeric">63%</td>
+        <td class="numeric">11%</td>
+        <td class="numeric">9%</td>
+        <td class="numeric">1%</td>
+        <td class="numeric">16%</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>mask-position</code></td>
+        <td></td>
+        <td></td>
+        <td class="numeric">50%</td>
+        <td class="numeric">50%</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>padding-inline-start</code></td>
+        <td class="numeric">33%</td>
+        <td class="numeric">5%</td>
+        <td class="numeric">62%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>gap</code></td>
+        <td class="numeric">21%</td>
+        <td class="numeric">16%</td>
+        <td class="numeric">1%</td>
+        <td></td>
+        <td class="numeric">62%</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>margin-block-end</code></td>
+        <td class="numeric">4%</td>
+        <td class="numeric">31%</td>
+        <td class="numeric">65%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><code>margin-inline-start</code></td>
+        <td class="numeric">38%</td>
+        <td class="numeric">46%</td>
+        <td class="numeric">14%</td>
+        <td></td>
+        <td class="numeric">1%</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>
+    {{ figure_link(
+      caption="Використання одиниць за властивостями.",
+      sheets_gid="1200981062",
+      sql_file="units_properties.sql"
+    ) }}
+  </figcaption>
+</figure>
+
+Схожим чином, не дивлячись на сильно розрекламовані переваги `rem` проти `em` для багатьох випадків використання, та універсальну підтримку браузерами <a hreflang="en" href="https://caniuse.com/rem">впродовж років</a>, веб все ще здебільшого не наздогнав: вірні `em` становлять 87% від використання всіх одиниць, що мають відношення до шрифтів, коли `rem` залишається далеко позаду з 12%. Ми справді бачили деяке використання `ch` (ширина символу '0') та `ex` (х-висота шрифту, що використовується), але воно дуже низьке (лише 0.37% та 0.19% від усіх пов'язаних зі шрифтами одиниць).
+
+{{ figure_markup(
+  image="font-units.png",
+  caption="Відносне поширення пов'язаних зі шрифтами одиниць.",
+  description="Гістограма показує відносну популярність різних пов'язаних зі шрифтами одиниць. Використання `em` значно переважає у 87,3% екземплярів, наступними є `rem` з 12,2%, `ch` з 0,4% та `ex` з 0,2% екземплярів мобільних сторінок.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=166603845&format=interactive",
+  sheets_gid="1221511608",
+  sql_file="units_frequency.sql"
+) }}
+
+Розміри — це єдині типи значень CSS, для яких ми можемо опустити одиниці, коли значення є нульовим, тобто ми можемо написати `0` замість `0px` або`0em` тощо. Розробники (або мініфікатори CSS?) надзвичайно широко цим користуються: серед усіх значень `0` 89% були без одиниць.
+
+{{ figure_markup(
+  image="zero-lengths.png",
+  caption="Відносна популярність нульових розмірів за одиницями у відсотках від випадків використання на мобільних сторінках.",
+  description="Кругова діаграма показує використання нульових розмірів без одиниць (так звані unitless) у 88,7% випадків на мобільних сторінках, одиниць `px` у 10,7% випадків та інших одиниць на 0,5% екземплярів.",
+  chart_url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRpe_HsNGpekn6YZV9k6QGmcZPxalqnDrL7DrDY-7X65RZEf_-aGfWuEvhk-yWV83ctIceE1bppCLpj/pubchart?oid=1935151776&format=interactive",
+  sheets_gid="313150061",
+  sql_file="units_zero.sql"
+) }}
+
 ------------------------------------
 ## Мета
 
